@@ -1,6 +1,9 @@
 define(function(view) {
 	var layout;
-	var counter = 0;
+	var count = 0;
+	var elements_id = [];
+	var form_elements_id = [];
+	var javascript_code = "";
 
 	console.log("Require: view.js");
 
@@ -72,12 +75,17 @@ define(function(view) {
 
 						if (layout[d][dd].elementType =='input') {
 							//element_ui//.append('li')
+							elementid = layout.id.info+'_input_'+layout[d][dd].name+counter;
+							elementName = layout[d][dd].name;
+							form_elements_id.push({id:elementid,name:elementName});
+							
+
 							td = tr.append('td')
 							inputel = td.append('input')
 							.attr('type',''+layout[d][dd].dataType)
 							.attr('name',layout[d][dd].name)
 							.attr('value',layout[d][dd].name)
-							.attr('id',layout.id.info+'_input_'+layout[d][dd].name+counter)
+							.attr('id',elementid)
 							.style('width','100%')
 							// .style('background-color','rgba(25,200,25,.75)')
 							// .text(layout[d][dd].name+": ")
@@ -113,9 +121,15 @@ define(function(view) {
 
 
 						if (layout[d][dd].elementType=='select') {
+								elementid = layout.id.info+'_select_'+layout[d][dd].name+counter;
+								elementName = layout[d][dd].name;
+								form_elements_id.push({id:elementid,name:elementName});
+								// elements_id.push({id:elementid,name:elementName});
+								// elements_id.push(layout.id.info+'_select_'+layout[d][dd].name+counter);
 								td = tr.append('td')
 								ss = td.append(layout[d][dd].elementType)
 								.attr('name',dd)
+								.attr('id',elementid)
 								.style('width','100%')
 								.attr('class','btn btn-default')
 								.on('change',function(){
@@ -149,14 +163,31 @@ define(function(view) {
 						
 					}
 
-					e.append('button')
+					submit_ui = e.append('button')
+					.attr('name',count)
+					.attr('id','submit_button'+count)
+					.attr('onclick','submitClick()')
 					.html('Submit')
 					// .style("position","absolute")
 					// .style("margin",marginpx+'px')
 					// .style('left','22%')
 					// .style('bottom','5px')
 					.on('click',function(d){
-						$("#"+layout.id.info+counter+'view' ).hide();
+						// $("#"+layout.id.info+counter+'view' ).hide();
+						// console.log(this.name);
+						// console.log(elements_id);
+						var elements_data = elements_id[this.name].data;
+						
+
+						var result = "submit: ?";
+						for (var s in elements_data) {
+							// console.log(elements_data[s]);
+							elname = elements_data[s].name;
+							elvalue = $('#'+elements_data[s].id).val();
+							result += elname+"="+elvalue
+							if (s < elements_data.length-1){result +="&";}
+						}
+						alert(result);
 					});
 
 					view_ui.append('button')
@@ -172,23 +203,54 @@ define(function(view) {
 
 					var tools_ui = view_ui.append("button")
 					.html('Export HTML')
+					.attr('name',count)
 					.style("position","absolute")
 					.style("margin",marginpx+'px')
 					.style('right','7%')
 					.style('bottom','15px')
 					.on('click',function(d){
-						var heads = '<!DOCTYPE html><html><head><title></title></head><body>'
+						var heads = '<!DOCTYPE html><html><head><title>'+layout.title.info+'</title></head><body>'
+						var javascript = '<script>'+elements_id[this.name].code+'</script>';
 						var content = $("#"+layout.id.info+counter+'_model_ui' ).html();
 						var footer = '</body></html>';
-						var data = heads+content+footer;
+						var data = heads+javascript+content+footer;
 						// console.log(data);
 						saveDataAsFile(data,layout.id.info+counter+'view'+'.html');
 					});
-
+					count++;
 
 				}
 
 			}
+
+			var index = counter-1;
+			elements_id.push({id:index,data:form_elements_id,code:''});
+
+
+			var elements_data = elements_id[index].data
+			var json_data = JSON.stringify(elements_data);
+			// console.log(json_data);
+			
+			//'submit_button'+count
+			javascript_code = 'var elements='+json_data+';';
+			javascript_code +='function submitClick() \
+				{ \
+					var result = "submit: ?"; \
+				    for (var e in elements) { \
+				    	var eid = elements[e].id; \
+				    	var elname = elements[e].name; \
+				    	var elvalue = document.getElementById(eid).value; \
+				    	result += elname+"="+elvalue; \
+						if (e < elements.length-1){result +="&";} \
+				    } \
+				    alert(result); \
+				}';
+
+			elements_id[index].code = javascript_code;
+
+
+			form_elements_id=[];
+			javascript_code="";
 	
 			$("#"+layout.id.info+counter+'view' ).draggable({
 				start:	function() { $(this).css({'z-index': topzindex}); }, 

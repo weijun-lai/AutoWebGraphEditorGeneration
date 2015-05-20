@@ -5,4 +5,8 @@ The demo could be found here
 
 Chrome browser is recommended to run this app.
 
+<<<<<<< HEAD
 More detail will come soon.
+=======
+More detail will come soon.
+>>>>>>> master
