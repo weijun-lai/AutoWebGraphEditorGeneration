@@ -218,12 +218,11 @@ define(function(view) {
 						saveDataAsFile(data,layout.id.info+counter+'view'+'.html');
 					});
 					count++;
-
 				}
-
 			}
 
-			var index = counter-1;
+			var index = counter-2;
+			console.log('index:'+index);
 			elements_id.push({id:index,data:form_elements_id,code:''});
 
 

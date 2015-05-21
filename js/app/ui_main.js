@@ -113,13 +113,14 @@ function initial() {
 			}
 			// if (formIndex>=layouts.length) return;
 			if (this.innerText == 'add model') {
+				var newlayout = layout_insert;
 				var exampleMode = require(["app/model"],function(model){
 				  model.show(
 				  	d3.select("body"),
-				  	layouts[(formIndex++)],
+				  	newlayout,
 				  	winWidth*0.2+offsetx,
 				  	winHeight*0.2+offsety,
-				  	++counter
+				  	counter
 				  	);
 				  // offsetx += 170; 
 				  // offsety += 0;
