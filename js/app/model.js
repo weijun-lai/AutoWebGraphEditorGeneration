@@ -1,6 +1,6 @@
 define(function(model) {
 	var layout;
-	var counter = 0;
+	var elcounts = 0;
 
 	console.log("Require: model.js");
 
@@ -251,17 +251,17 @@ define(function(model) {
 			.style('bottom','5px')
 			.on('click',function(d){
 
-				counter = layout['data'].length;
+				elcounts = layout['data'].length;
 				
 				layout.data.push({name:counter,elementType:'input',dataType:'string',info:''});
 
 				var s = element_ui.append('li')
-				.attr('id','li_'+counter)
+				.attr('id','li_'+elcounts)
 				.style('width','100%')
 				s.append('input')
-				.attr('name',counter)
+				.attr('name',elcounts)
 				.attr('type','text')
-				.attr('value','empty'+counter)
+				.attr('value','empty'+elcounts)
 				.style('width','30%')
 				.on('change',function(){
 					// console.log(this.value);
@@ -271,7 +271,7 @@ define(function(model) {
 				});
 
 				var el = s.append('select')
-				.attr('name',counter)
+				.attr('name',elcounts)
 				.style('width','20%')
 				.attr('class','btn btn-default')
 				.on('change',function(d){
@@ -301,8 +301,8 @@ define(function(model) {
 
 				var ss = s.append('select')
 				.style('width','30%')
-				.attr('name',counter)
-				.attr('id','dataType'+counter)
+				.attr('name',elcounts)
+				.attr('id','dataType'+elcounts)
 				.attr('class','btn btn-default')
 				.on('change',function(){
 					layout['data'][''+this.name].dataType = this.value;
@@ -318,7 +318,7 @@ define(function(model) {
 				
 				delete_ui = s.append('input')
 				.attr('type','button')
-				.attr('name',counter)
+				.attr('name',elcounts)
 				.attr('value','Delete')
 				.style("position","absolute")
 				.style('right','5px')
@@ -330,8 +330,8 @@ define(function(model) {
 
 				s.append('input')
 				.attr('type','text')
-				.attr('id','info'+counter)
-				.attr('name',counter)
+				.attr('id','info'+elcounts)
+				.attr('name',elcounts)
 				// .attr('value',layout['data'][''+this.name].info)
 				.style("position","absolute")
 				.style('right','18%')
@@ -345,7 +345,8 @@ define(function(model) {
 				});
 				// $('input[type="checkbox"]').width('25px');
 				// $('input[type="checkbox"]').height('25px');
-				counter++;
+				// ++counter;
+				elcounts++;
 
 			});
 
@@ -358,6 +359,7 @@ define(function(model) {
 			.style('bottom','5px')
 			.on('click',function(d){
 				// console.log(layout);
+				
 				var exampleView = require(["app/view"],function(view){
 				  view.show(
 				  	d3.select("body"),
