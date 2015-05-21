@@ -253,7 +253,7 @@ define(function(model) {
 
 				elcounts = layout['data'].length;
 				
-				layout.data.push({name:counter,elementType:'input',dataType:'string',info:''});
+				layout.data.push({name:'empty',elementType:'input',dataType:'string',info:''});
 
 				var s = element_ui.append('li')
 				.attr('id','li_'+elcounts)

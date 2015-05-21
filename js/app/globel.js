@@ -139,7 +139,7 @@ function loadFileAsText(evt)
 				  	json_parsed_data,
 				  	winWidth*0.2,
 				  	winHeight*0.2,
-				  	++counter
+				  	counter
 				  	);
 				});
 			// json_parsed_data = [];
